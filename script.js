@@ -97,6 +97,17 @@ const calcShowSummary = function(movements) {
 };
 calcShowSummary(account1.movements)
 
+const userLoginCreator = function(accounts) {
+	accounts.forEach(function(user){
+		user.username = user.owner
+		.toLocaleLowerCase()
+		.split(' ')
+		.map((name) => name[0])
+		.join('');
+	});
+}
+userLoginCreator(accounts);
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
