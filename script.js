@@ -186,14 +186,64 @@ btnSort.addEventListener('click', function(event){
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-// LECTURES
-// const currencies = new Map([
-// 	['USD', 'United States dollar'],
-// 	['EUR', 'Euro'],
-// 	['GBP', 'Pound sterling'],
-// ]);
+// CHALLENGE
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+/*
+const dogs = [
+	{ weight: 22, curFood: 250, owners: ['Alice', 'Bob'] }, 
+	{ weight: 8, curFood: 200, owners: ['Matilda'] },
+	{ weight: 13, curFood: 275, owners: ['Sarah', 'John'] }, 
+	{ weight: 32, curFood: 340, owners: ['Michael'] },
+];
 
-/////////////////////////////////////////////////
+dogs.forEach((elem) => {
+	return elem.recommendedFood = Math.round(elem.weight ** 0.75 * 28);
+});
 
+const finder = dogs.find((elem)=>elem.owners.includes('Sarah'));
+const quickJudger = finder.curFood > finder.recommendedFood ? 'Eat to much' : 'Not eat enough';
+console.log(quickJudger);
+console.log('-------');
+
+const judge = function(arrDogs) {
+	const ownersEatTooMuch = arrDogs
+	.filter((elem) => elem.curFood > elem.recommendedFood + (elem.recommendedFood * 0.1))
+	.flatMap((elem) => elem.owners);
+	console.log(`${ownersEatTooMuch.join(' and ')} dogs eat to much!`);
+
+	const ownersEatTooLittle = arrDogs
+	.filter((elem) => elem.curFood < elem.recommendedFood - (elem.recommendedFood * 0.1))
+	.flatMap((elem) => elem.owners);
+	console.log(`${ownersEatTooLittle.join(' and ')} dogs eat to little!`);
+	console.log('-------');
+
+	console.log(ownersEatTooMuch);
+	console.log(ownersEatTooLittle);
+	console.log('-------');
+	
+	const anyEatExactly = arrDogs.some((elem) => {
+		return elem.curFood === elem.recommendedFood - (elem.recommendedFood * 0.1) &&
+		elem.curFood === elem.recommendedFood + (elem.recommendedFood *0.1);
+	});
+	console.log(anyEatExactly);
+	console.log('-------');
+
+	const checkEatingProperly = function(dog) {
+		return dog.curFood >= dog.recommendedFood - (dog.recommendedFood * 0.1) &&
+		dog.curFood <= dog.recommendedFood + (dog.recommendedFood * 0.1);
+	}
+
+	const anyEatProperly = arrDogs.some(checkEatingProperly);
+	console.log(anyEatProperly);
+	console.log('-------');
+
+	const findEatProperly = arrDogs.find(checkEatingProperly);
+	console.log(findEatProperly);
+	console.log('-------');
+
+	const dogCopy = arrDogs.map((elem) => elem).sort((a,b) => a.recommendedFood - b.recommendedFood);
+	console.log(dogCopy);
+}
+
+judge(dogs);
+*/
