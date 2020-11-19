@@ -75,9 +75,9 @@ const displayMovements = function(movements) {
 	});
 }
 
-const calcShowBalance = function(movements) {
-	const balance = movements.reduce((sum, mov) => sum+=mov, 0);
-	labelBalance.textContent = `${balance}€`;
+const calcShowBalance = function(account) {
+	account.balance = account.movements.reduce((sum, mov) => sum+=mov, 0);
+	labelBalance.textContent = `${account.balance}€`;
 }
 
 const calcShowSummary = function(account) {
@@ -94,6 +94,15 @@ const calcShowSummary = function(account) {
 	
 };
 
+const updateUI = function(currentUser) {
+	// Show balance
+	calcShowBalance(currentUser);
+	// Show summary
+	calcShowSummary(currentUser);
+	// Show movements
+	displayMovements(currentUser.movements);	
+};
+
 const userLoginCreator = function(accounts) {
 	accounts.forEach(function(user){
 		user.username = user.owner
@@ -102,7 +111,7 @@ const userLoginCreator = function(accounts) {
 		.map((name) => name[0])
 		.join('');
 	});
-}
+};
 userLoginCreator(accounts);
 let currentUser;
 
@@ -119,27 +128,37 @@ btnLogin.addEventListener('click', function(event){
 		inputLoginPin.value = '';
 		inputLoginUsername.blur();
 		inputLoginPin.blur();
-		// Show balance
-		calcShowBalance(currentUser.movements);
-		// Show summary
-		calcShowSummary(currentUser);
-		// Show movements
-		displayMovements(currentUser.movements);
+		updateUI(currentUser);
 	} else {
-		console.log('wrong');
 		labelWelcome.textContent = `Wrong username or PIN`;
+	}
+});
+
+// Make Transfer
+btnTransfer.addEventListener('click', function(event){
+	event.preventDefault();
+	const amount = Number(inputTransferAmount.value);
+	const receiverAcc = accounts.find(acc => acc.username === inputTransferTo.value);
+	console.log(receiverAcc);
+	if(amount > 0 && amount <= currentUser.balance && receiverAcc && receiverAcc.username !== currentUser.username) {
+		currentUser.movements.push(-amount);
+		receiverAcc.movements.push(amount);
+		inputTransferAmount.value = inputTransferTo.value = '';
+		inputTransferAmount.blur();
+		inputTransferTo.blur();
+		updateUI(currentUser);
 	}
 });
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
-const currencies = new Map([
-	['USD', 'United States dollar'],
-	['EUR', 'Euro'],
-	['GBP', 'Pound sterling'],
-]);
+// const currencies = new Map([
+// 	['USD', 'United States dollar'],
+// 	['EUR', 'Euro'],
+// 	['GBP', 'Pound sterling'],
+// ]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
