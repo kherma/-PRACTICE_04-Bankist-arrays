@@ -65,18 +65,22 @@ const displayMovements = function(movements) {
 	containerMovements.innerHTML = '';
 	movements.forEach(function(mov, i){
 		const transactionType = mov > 0 ? 'deposit' : 'withdrawal';
-		console.log(transactionType);
 		const html = `
 		<div class="movements__row">
 			<div class="movements__type movements__type--${transactionType}">${i + 1} ${transactionType.toUpperCase()}</div>
-			<div class="movements__value">${mov}</div>
+			<div class="movements__value">${mov}€</div>
 		  </div>
 		`;
 		containerMovements.insertAdjacentHTML('afterbegin' ,html);
 	});
 }
-
 displayMovements(account1.movements);
+
+const calcShowBalance = function(movements) {
+	const balance = movements.reduce((sum, mov) => sum+=mov, 0);
+	labelBalance.textContent = `${balance}€`;
+}
+calcShowBalance(account1.movements);
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
