@@ -82,6 +82,21 @@ const calcShowBalance = function(movements) {
 }
 calcShowBalance(account1.movements);
 
+const calcShowSummary = function(movements) {
+	const income = movements.filter((mov) => mov > 0).reduce((sum, mov) => sum += mov,0);
+	const outcome = movements.filter((mov) => mov < 0).reduce((sum,mov) => sum += mov, 0);
+	const interest = movements
+	.filter((mov) => mov > 0)
+	.map((mov) => mov * 1.2/100)
+	.filter((mov) => mov >= 1)
+	.reduce((sum, mov) => sum += mov);
+	labelSumIn.textContent = `${income}€`;
+	labelSumOut.textContent = `${Math.abs(outcome)}€`;
+	labelSumInterest.textContent = `${interest}€`;
+	
+};
+calcShowSummary(account1.movements)
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
