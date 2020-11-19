@@ -115,7 +115,7 @@ const userLoginCreator = function(accounts) {
 userLoginCreator(accounts);
 let currentUser;
 
-// Event handler
+// Login Handler
 btnLogin.addEventListener('click', function(event){
 	event.preventDefault();
 	currentUser = accounts.find(acc => acc.username === inputLoginUsername.value);
@@ -147,6 +147,21 @@ btnTransfer.addEventListener('click', function(event){
 		inputTransferAmount.blur();
 		inputTransferTo.blur();
 		updateUI(currentUser);
+	}
+});
+
+// Close Account
+btnClose.addEventListener('click', function(event){
+	event.preventDefault();
+	const userClose = inputCloseUsername.value;
+	const closePIN = inputClosePin.value;
+	if(currentUser.username === userClose && currentUser.pin === Number(closePIN)) {
+		const index = accounts.findIndex(acc => acc.username === currentUser.username);
+		accounts.splice(index, 1);
+		inputCloseUsername.value = inputClosePin.value = '';
+		inputCloseUsername.blur();
+		inputClosePin.blur();
+		containerApp.style.opacity = 0;
 	}
 });
 
