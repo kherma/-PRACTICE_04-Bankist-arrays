@@ -74,20 +74,18 @@ const displayMovements = function(movements) {
 		containerMovements.insertAdjacentHTML('afterbegin' ,html);
 	});
 }
-displayMovements(account1.movements);
 
 const calcShowBalance = function(movements) {
 	const balance = movements.reduce((sum, mov) => sum+=mov, 0);
 	labelBalance.textContent = `${balance}€`;
 }
-calcShowBalance(account1.movements);
 
-const calcShowSummary = function(movements) {
-	const income = movements.filter((mov) => mov > 0).reduce((sum, mov) => sum += mov,0);
-	const outcome = movements.filter((mov) => mov < 0).reduce((sum,mov) => sum += mov, 0);
-	const interest = movements
+const calcShowSummary = function(account) {
+	const income = account.movements.filter((mov) => mov > 0).reduce((sum, mov) => sum += mov,0);
+	const outcome = account.movements.filter((mov) => mov < 0).reduce((sum,mov) => sum += mov, 0);
+	const interest = account.movements
 	.filter((mov) => mov > 0)
-	.map((mov) => mov * 1.2/100)
+	.map((mov) => mov * account.interestRate/100)
 	.filter((mov) => mov >= 1)
 	.reduce((sum, mov) => sum += mov);
 	labelSumIn.textContent = `${income}€`;
@@ -95,7 +93,6 @@ const calcShowSummary = function(movements) {
 	labelSumInterest.textContent = `${interest}€`;
 	
 };
-calcShowSummary(account1.movements)
 
 const userLoginCreator = function(accounts) {
 	accounts.forEach(function(user){
@@ -107,11 +104,36 @@ const userLoginCreator = function(accounts) {
 	});
 }
 userLoginCreator(accounts);
+let currentUser;
+
+// Event handler
+btnLogin.addEventListener('click', function(event){
+	event.preventDefault();
+	currentUser = accounts.find(acc => acc.username === inputLoginUsername.value);
+	if(currentUser && currentUser.pin === Number(inputLoginPin.value)) {
+		// Display UI and messages
+		labelWelcome.textContent = `Welcome back ${currentUser.owner.split(' ')[0]}`;
+		containerApp.style.opacity = 1;
+		// Clear login inputs
+		inputLoginUsername.value = '';
+		inputLoginPin.value = '';
+		inputLoginUsername.blur();
+		inputLoginPin.blur();
+		// Show balance
+		calcShowBalance(currentUser.movements);
+		// Show summary
+		calcShowSummary(currentUser);
+		// Show movements
+		displayMovements(currentUser.movements);
+	} else {
+		console.log('wrong');
+		labelWelcome.textContent = `Wrong username or PIN`;
+	}
+});
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
-
 const currencies = new Map([
 	['USD', 'United States dollar'],
 	['EUR', 'Euro'],
