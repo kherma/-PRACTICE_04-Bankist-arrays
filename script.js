@@ -61,9 +61,10 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function(movements) {
+const displayMovements = function(movements, sort = false) {
+	const moves = sort ? movements.slice(0, movements.length).sort((a,b) => a-b) : movements;
 	containerMovements.innerHTML = '';
-	movements.forEach(function(mov, i){
+	moves.forEach(function(mov, i){
 		const transactionType = mov > 0 ? 'deposit' : 'withdrawal';
 		const html = `
 		<div class="movements__row">
@@ -139,7 +140,6 @@ btnTransfer.addEventListener('click', function(event){
 	event.preventDefault();
 	const amount = Number(inputTransferAmount.value);
 	const receiverAcc = accounts.find(acc => acc.username === inputTransferTo.value);
-	console.log(receiverAcc);
 	if(amount > 0 && amount <= currentUser.balance && receiverAcc && receiverAcc.username !== currentUser.username) {
 		currentUser.movements.push(-amount);
 		receiverAcc.movements.push(amount);
@@ -147,6 +147,18 @@ btnTransfer.addEventListener('click', function(event){
 		inputTransferAmount.blur();
 		inputTransferTo.blur();
 		updateUI(currentUser);
+	}
+});
+
+// Request Loan
+btnLoan.addEventListener('click', function(event){
+	event.preventDefault();
+	const amount = Number(inputLoanAmount.value);
+	if(amount > 0 && currentUser.movements.some(mov => mov >= amount * 0.1)) {
+		currentUser.movements.push(amount);
+		updateUI(currentUser);
+		inputLoanAmount.value = '';
+		inputLoanAmount.blur();
 	}
 });
 
@@ -164,6 +176,13 @@ btnClose.addEventListener('click', function(event){
 		containerApp.style.opacity = 0;
 	}
 });
+let sorted = false;
+// Sort function
+btnSort.addEventListener('click', function(event){
+	event.preventDefault();
+	displayMovements(currentUser.movements, !sorted);
+	sorted = !sorted;
+});
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -174,6 +193,7 @@ btnClose.addEventListener('click', function(event){
 // 	['GBP', 'Pound sterling'],
 // ]);
 
-// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
+
